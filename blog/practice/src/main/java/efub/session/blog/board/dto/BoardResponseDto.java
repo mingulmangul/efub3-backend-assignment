@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class BoardResponseDto {
     private Long boardId;
     private String boardName;
-    private String explain;
+    private String description;
     private String notice;
     private String ownerName;
     private LocalDateTime createdDate;
@@ -20,7 +20,7 @@ public class BoardResponseDto {
     public BoardResponseDto(Board board){
         this.boardId=board.getBoardId();
         this.boardName=board.getName();
-        this.explain=board.getExplain();
+        this.description=board.getDescription();
         this.notice=board.getNotice();
         this.ownerName=board.getOwner().getNickname();
         this.createdDate=board.getCreatedDate();

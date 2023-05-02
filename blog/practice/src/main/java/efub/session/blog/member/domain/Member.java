@@ -39,8 +39,7 @@ public class Member extends BaseTimeEntity {
     private MemberStatus status;
 
     @Builder
-    public Member(Long memberId, Long studentId, String school, String nickname, String email, String encodedPassword,String bio){
-        this.memberId=memberId;
+    public Member(Long studentId, String school, String nickname, String email, String encodedPassword,String bio){
         this.studentId=studentId;
         this.school=school;
         this.nickname=nickname;

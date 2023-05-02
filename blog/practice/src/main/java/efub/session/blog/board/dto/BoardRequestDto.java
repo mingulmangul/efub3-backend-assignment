@@ -5,6 +5,6 @@ import lombok.Getter;
 public class BoardRequestDto {
     private Long memberId;
     private String name;
-    private String explain;
+    private String description;
     private String notice;
 }

@@ -46,6 +46,7 @@ public class SignUpRequestDto {
                 .studentId(this.studentId)
                 .school(this.school)
                 .nickname(this.nickname)
+                .encodedPassword(this.password)
                 .email(this.email)
                 .bio("안녕하세요!")
                 .build();

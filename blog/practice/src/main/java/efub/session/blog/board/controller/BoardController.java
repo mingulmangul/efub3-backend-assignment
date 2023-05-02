@@ -48,7 +48,7 @@ public class BoardController {
         return new BoardResponseDto(board);
     }
 
-    @DeleteMapping("/{boardId}/{memberId}")
+    @DeleteMapping("/{boardId}")
     @ResponseStatus(value = HttpStatus.OK)
     public String boardRemove(@PathVariable Long boardId,@RequestParam Long memberId){
         boardService.removeBoard(boardId,memberId);

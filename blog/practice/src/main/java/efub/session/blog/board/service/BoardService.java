@@ -25,7 +25,7 @@ public class BoardService {
         return boardRepository.save(
                 Board.builder()
                         .name(requestDto.getName())
-                        .explain(requestDto.getExplain())
+                        .description(requestDto.getDescription())
                         .notice((requestDto.getNotice()))
                         .owner(owner)
                         .build()
