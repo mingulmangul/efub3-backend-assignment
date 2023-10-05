@@ -27,7 +27,10 @@ public class Board extends BaseTimeEntity {
 	@Column(name = "board_id")
 	private Long boardId;
 
+	@Column(name = "name", length = 30)
 	private String name;
+
+	@Column(name = "description", length = 100)
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -36,9 +39,23 @@ public class Board extends BaseTimeEntity {
 
 	@Builder
 	public Board(String name, String description, Member owner) {
+		verifyName(name);
 		this.name = name;
+		verifyDescription(description);
 		this.description = description;
 		this.owner = owner;
+	}
+
+	private void verifyDescription(String description) {
+		if (description.length() > 100 || description.length() < 10) {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	private void verifyName(String name) {
+		if (name.length() > 30 || name.length() < 3) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	public void updateBoard(Member member, String description) {
