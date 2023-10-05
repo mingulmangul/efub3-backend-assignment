@@ -28,6 +28,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseTimeEntity {
 
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final List<Comment> commentList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private final List<PostHeart> postHeartList = new ArrayList<>();
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_id")
@@ -46,14 +52,9 @@ public class Post extends BaseTimeEntity {
 	@JoinColumn(name = "member_id")
 	private Member writer;
 
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final List<Comment> commentList = new ArrayList<>();
-
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-	private final List<PostHeart> postHeartList = new ArrayList<>();
-
 	@Builder
 	public Post(String content, Member writer, Boolean anonymous, Board board) {
+		verifyContentLength(content);
 		this.content = content;
 		this.writer = writer;
 		this.anonymous = anonymous;
@@ -61,7 +62,15 @@ public class Post extends BaseTimeEntity {
 	}
 
 	public void updatePost(String content) {
+		verifyContentLength(content);
 		this.content = content;
 	}
+
+	private void verifyContentLength(String content) {
+		if (content.length() < 5) {
+			throw new IllegalArgumentException();
+		}
+	}
+
 }
 
