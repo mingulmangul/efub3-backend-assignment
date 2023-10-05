@@ -37,11 +37,12 @@ public class Comment extends BaseTimeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id", updatable = false)
 	private Post post;
-	
+
 	private boolean anonymous;
 
 	@Builder
 	public Comment(String content, Member writer, Post post, boolean anonymous) {
+		verifyContentLength(content);
 		this.content = content;
 		this.writer = writer;
 		this.post = post;
@@ -49,12 +50,19 @@ public class Comment extends BaseTimeEntity {
 	}
 
 	public void updateComment(String content) {
+		verifyContentLength(content);
 		this.content = content;
+	}
+
+	private void verifyContentLength(String content) {
+		if (content.length() < 5) {
+			throw new IllegalArgumentException();
+		}
 	}
 
 	public void setPost(Post post) {
 		if (this.post != null) {
-			this.post.getCommentList().remove(this);
+			throw new IllegalArgumentException();
 		}
 		this.post = post;
 		if (!post.getCommentList().contains(this)) {
