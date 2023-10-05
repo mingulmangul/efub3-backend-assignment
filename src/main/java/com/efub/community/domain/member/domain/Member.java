@@ -38,7 +38,7 @@ public class Member extends BaseTimeEntity {
 
 	@Column(nullable = false, updatable = false)
 	private Integer studentNo;
-	
+
 	@Column(nullable = false, updatable = false)
 	private String university;
 
@@ -47,6 +47,7 @@ public class Member extends BaseTimeEntity {
 
 	@Builder
 	public Member(String email, String encodedPassword, String nickname, Integer studentNo, String university) {
+		verifyEmail(email);
 		this.email = email;
 		this.encodedPassword = encodedPassword;
 		this.nickname = nickname;
@@ -55,11 +56,26 @@ public class Member extends BaseTimeEntity {
 		this.status = REGISTERED;
 	}
 
+	private void verifyEmail(String email) {
+		String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+		if (!email.matches(regex)) {
+			throw new IllegalArgumentException("유효하지 않은 이메일 형식입니다.");
+		}
+	}
+
 	public void updateMember(String nickname) {
+		verifyStatus();
 		this.nickname = nickname;
 	}
 
 	public void withdraw() {
+		verifyStatus();
 		this.status = UNREGISTERED;
+	}
+
+	private void verifyStatus() {
+		if (status == UNREGISTERED) {
+			throw new IllegalArgumentException("비활성화된 사용자입니다.");
+		}
 	}
 }
