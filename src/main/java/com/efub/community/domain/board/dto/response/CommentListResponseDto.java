@@ -1,52 +1,52 @@
 package com.efub.community.domain.board.dto.response;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.efub.community.domain.board.domain.Comment;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentListResponseDto {
-	//게시글에 해당하는 댓글 목록 반환 dto
+
 	@Getter
 	@Builder
 	@AllArgsConstructor(access = AccessLevel.PRIVATE)
 	public static class Post {
 
-
 		private Long postId;
-
 		private List<SingleComment> comments;
-
 		private Integer count;
 
+		public static CommentListResponseDto.Post of(Long postId, List<Comment> commentList) {
+			return CommentListResponseDto.Post.builder()
+				.postId(postId)
+				.comments(commentList.stream().map(SingleComment::of).collect(Collectors.toList()))
+				.count(commentList.size())
+				.build();
+		}
 
 		@Getter
-		public static class SingleComment{//해당 post에 있는 단일 댓글
+		public static class SingleComment {
 
-
-			private Long commentId;
-
-			private String writerName;
-
-			private String content;
-
-			private LocalDateTime createDate;
-
-			private LocalDateTime modifiedDate;
+			private final Long commentId;
+			private final String writerName;
+			private final String content;
+			private final LocalDateTime createDate;
+			private final LocalDateTime modifiedDate;
 
 			public SingleComment(Comment comment) {
 				this.commentId = comment.getCommentId();
-				if(comment.isAnonymous()){
+				if (comment.isAnonymous()) {
 					this.writerName = "익명" + commentId;
-				}
-				else{
+				} else {
 					this.writerName = comment.getWriter().getNickname();
 				}
 				this.content = comment.getContent();
@@ -58,15 +58,5 @@ public class CommentListResponseDto {
 				return new SingleComment(comment);
 			}
 		}
-
-		public static CommentListResponseDto.Post of(Long postId, List<Comment> commentList) {
-			return CommentListResponseDto.Post.builder()
-					.postId(postId)
-					.comments(commentList.stream().map(SingleComment::of).collect(Collectors.toList()))
-					.count(commentList.size())
-					.build();
-		}
 	}
-
-	//해당 작성자 댓글 전체 조회
 }

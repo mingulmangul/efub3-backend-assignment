@@ -36,6 +36,5 @@ public class CommentRequestDto {
 			.anonymous(this.anonymous)
 			.writer(account)
 			.build();
-
 	}
 }

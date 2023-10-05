@@ -1,30 +1,32 @@
 package com.efub.community.domain.member.dto.request;
 
-import com.efub.community.domain.member.domain.Member;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import com.efub.community.domain.member.domain.Member;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignUpRequestDto {
-	@NotBlank(message = "이메일은 필수입니다.")//해당 값이 null이 아니고, 공백(""과 " " 모두 포함)이 아닌지 검증
+
+	@NotBlank(message = "이메일은 필수입니다.")
 	@Email(message = "유효하지 않은 이메일 형식입니다.",
-			regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
+		regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
 	private String email;
 
-	@NotBlank(message = "비밀번호는 필수입니다.")//해당 값이 null이 아니고, 공백(""과 " " 모두 포함)이 아닌지 검증
+	@NotBlank(message = "비밀번호는 필수입니다.")
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!.?,])[A-Za-z\\d!.?,]{2,16}$",
-			message = "16자 이내의 영문자 및 숫자와 ?,!,., , 특수문자로 입력해주세요.")
+		message = "16자 이내의 영문자 및 숫자와 ?,!,., , 특수문자로 입력해주세요.")
 	private String password;
 
-	@NotBlank(message = "닉네임은 필수입니다. ")//해당 값이 null이 아니고, 공백(""과 " " 모두 포함)이 아닌지 검증
+	@NotBlank(message = "닉네임은 필수입니다. ")
 	private String nickname;
 
 	@NotBlank(message = "학교 이름은 필수입니다. ")
@@ -42,14 +44,13 @@ public class SignUpRequestDto {
 		this.studentNo = studentNo;
 	}
 
-	public Member toEntity(String encodedPassword){
+	public Member toEntity(String encodedPassword) {
 		return Member.builder()
-				.email(this.email)
-				.encodedPassword(encodedPassword)
-				.nickname(this.nickname)
-				.university(this.university)
-				.studentNo(this.studentNo)
-				.build();
+			.email(this.email)
+			.encodedPassword(encodedPassword)
+			.nickname(this.nickname)
+			.university(this.university)
+			.studentNo(this.studentNo)
+			.build();
 	}
-
 }
