@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.efub.community.domain.member.domain.Member;
 import com.efub.community.global.common.BaseTimeEntity;
@@ -42,8 +41,8 @@ public class Post extends BaseTimeEntity {
 	@Column(columnDefinition = "TEXT", nullable = false)
 	private String content;
 
-	@OneToOne
-	@JoinColumn(name = "post_id", insertable = false, updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "board_id", insertable = false, updatable = false)
 	private Board board;
 
 	private boolean anonymous;
