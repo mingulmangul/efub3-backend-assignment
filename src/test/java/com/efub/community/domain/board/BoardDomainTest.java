@@ -26,7 +26,8 @@ public abstract class BoardDomainTest {
 	protected Post post1;
 	protected Post post2;
 	protected String postContent = "올바른 게시글의 내용입니다. (5자 초과)";
-	protected Comment comment;
+	protected Comment comment1;
+	protected Comment comment2;
 	protected String commentContent = "올바른 댓글의 내용입니다. (5자 초과)";
 
 	@BeforeEach
@@ -67,10 +68,16 @@ public abstract class BoardDomainTest {
 			.anonymous(false)
 			.board(board1)
 			.build();
-		comment = Comment.builder()
+		comment1 = Comment.builder()
 			.content(commentContent)
 			.writer(member1)
 			.post(post1)
+			.anonymous(true)
+			.build();
+		comment2 = Comment.builder()
+			.content(commentContent)
+			.writer(member1)
+			.post(post2)
 			.anonymous(true)
 			.build();
 	}

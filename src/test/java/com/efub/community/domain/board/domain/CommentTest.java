@@ -15,10 +15,10 @@ class CommentTest extends BoardDomainTest {
 		// given
 		String newContent = "새로 업데이트되는 댓글의 내용입니다.";
 		// when
-		assertThat(comment.getContent()).isEqualTo(commentContent);
-		comment.updateComment(newContent);
+		assertThat(comment1.getContent()).isEqualTo(commentContent);
+		comment1.updateComment(newContent);
 		// then
-		assertThat(comment.getContent()).isEqualTo(newContent);
+		assertThat(comment1.getContent()).isEqualTo(newContent);
 	}
 
 	@Test
@@ -37,7 +37,7 @@ class CommentTest extends BoardDomainTest {
 	@DisplayName("댓글에 게시글을 설정할 때 게시글이 null이 아니면, 예외가 발생합니다.")
 	void updateShortPost() {
 		assertThatIllegalArgumentException()
-			.isThrownBy(() -> comment.setPost(post2));
+			.isThrownBy(() -> comment1.setPost(post2));
 	}
 
 }
