@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class PostTest extends BoardDomainEntityTest {
+import com.efub.community.domain.board.BoardDomainTest;
+
+class PostTest extends BoardDomainTest {
 
 	@Test
 	@DisplayName("포스트를 업데이트합니다.")
@@ -27,7 +29,7 @@ class PostTest extends BoardDomainEntityTest {
 				.content("게시글")
 				.writer(member1)
 				.anonymous(true)
-				.board(board)
+				.board(board1)
 				.build());
 	}
 

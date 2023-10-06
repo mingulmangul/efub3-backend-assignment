@@ -5,17 +5,19 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class BoardTest extends BoardDomainEntityTest {
+import com.efub.community.domain.board.BoardDomainTest;
+
+class BoardTest extends BoardDomainTest {
 
 	@Test
 	@DisplayName("보드를 업데이트합니다.")
 	void updateBoard() {
 		// given
 		// when
-		assertThat(board.getDescription()).isEqualTo(description);
-		board.updateBoard(member2, newDescription);
+		assertThat(board1.getDescription()).isEqualTo(description);
+		board1.updateBoard(member2, newDescription);
 		// then
-		assertThat(board.getDescription()).isEqualTo(newDescription);
+		assertThat(board1.getDescription()).isEqualTo(newDescription);
 	}
 
 	@Test

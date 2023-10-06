@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class CommentTest extends BoardDomainEntityTest {
+import com.efub.community.domain.board.BoardDomainTest;
+
+class CommentTest extends BoardDomainTest {
 
 	@Test
 	@DisplayName("댓글을 업데이트합니다.")
