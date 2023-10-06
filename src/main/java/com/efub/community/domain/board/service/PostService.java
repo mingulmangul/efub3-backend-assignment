@@ -72,7 +72,7 @@ public class PostService {
 	@Transactional(readOnly = true)
 	public List<Post> findByWriter(Long accountId) {
 		Member writer = memberService.findById(accountId);
-		return postRepository.findByWriter(writer);
+		return postRepository.findAllByWriter(writer);
 	}
 
 	@Transactional(readOnly = true)
