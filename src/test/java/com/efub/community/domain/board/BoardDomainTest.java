@@ -1,13 +1,21 @@
 package com.efub.community.domain.board;
 
+import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
+import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.efub.community.domain.board.domain.Board;
 import com.efub.community.domain.board.domain.Comment;
 import com.efub.community.domain.board.domain.Post;
 import com.efub.community.domain.member.domain.Member;
 
+@ExtendWith(SoftAssertionsExtension.class)
 public abstract class BoardDomainTest {
+
+	@InjectSoftAssertions
+	protected SoftAssertions softly;
 
 	protected Member member1;
 	protected Member member2;

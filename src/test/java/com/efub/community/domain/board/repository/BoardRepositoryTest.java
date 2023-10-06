@@ -3,12 +3,8 @@ package com.efub.community.domain.board.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.api.SoftAssertions;
-import org.assertj.core.api.junit.jupiter.InjectSoftAssertions;
-import org.assertj.core.api.junit.jupiter.SoftAssertionsExtension;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -17,11 +13,7 @@ import com.efub.community.domain.board.domain.Board;
 import com.efub.community.domain.member.repository.MemberRepository;
 
 @DataJpaTest
-@ExtendWith(SoftAssertionsExtension.class)
 class BoardRepositoryTest extends BoardDomainTest {
-
-	@InjectSoftAssertions
-	private SoftAssertions softly;
 
 	@Autowired
 	private BoardRepository boardRepository;
