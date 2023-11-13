@@ -6,18 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.efub.community.domain.member.auth.dto.response.SignUpResponseDto;
 import com.efub.community.domain.member.domain.Member;
-import com.efub.community.domain.member.dto.request.LoginRequestDto;
 import com.efub.community.domain.member.dto.request.MemberUpdateRequestDto;
-import com.efub.community.domain.member.dto.request.SignUpRequestDto;
-import com.efub.community.domain.member.dto.response.LoginResponseDto;
-import com.efub.community.domain.member.dto.response.MemberResponseDto;
 import com.efub.community.domain.member.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,34 +27,19 @@ public class MemberController {
 
 	private final MemberService memberService;
 
-	@PostMapping
-	@ResponseStatus(value = HttpStatus.CREATED)
-	public MemberResponseDto signUp(@RequestBody @Valid final SignUpRequestDto requestDto) {
-		Long id = memberService.signUp(requestDto);
-		Member findMember = memberService.findById(id);
-		return new MemberResponseDto(findMember);
-	}
-
 	@GetMapping("/{memberId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public MemberResponseDto getMember(@PathVariable Long memberId) {
+	public SignUpResponseDto getMember(@PathVariable Long memberId) {
 		Member findMember = memberService.findById(memberId);
-		return new MemberResponseDto(findMember);
-	}
-
-	@PostMapping("/login")
-	@ResponseStatus(value = HttpStatus.OK)
-	public LoginResponseDto login(@RequestBody final LoginRequestDto requestDto) {
-		Long memberId = memberService.login(requestDto);
-		return new LoginResponseDto(memberId);
+		return new SignUpResponseDto(findMember);
 	}
 
 	@PatchMapping("/profile/{memberId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public MemberResponseDto update(@PathVariable final Long memberId,
+	public SignUpResponseDto update(@PathVariable final Long memberId,
 		@RequestBody @Valid final MemberUpdateRequestDto requestDto) {
 		Member findMember = memberService.findById(memberId);
-		return new MemberResponseDto(findMember);
+		return new SignUpResponseDto(findMember);
 	}
 
 	@PatchMapping("/{memberId}")

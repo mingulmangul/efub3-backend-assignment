@@ -1,4 +1,4 @@
-package com.efub.community.domain.member.dto.response;
+package com.efub.community.domain.member.auth.dto.response;
 
 import com.efub.community.domain.member.domain.Member;
 
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberResponseDto {
+public class SignUpResponseDto {
 
 	private Long accountId;
 	private String email;
@@ -16,7 +16,7 @@ public class MemberResponseDto {
 	private String university;
 	private Integer studentNo;
 
-	public MemberResponseDto(Member member) {
+	public SignUpResponseDto(Member member) {
 		this.accountId = member.getMemberId();
 		this.email = member.getEmail();
 		this.nickname = member.getNickname();

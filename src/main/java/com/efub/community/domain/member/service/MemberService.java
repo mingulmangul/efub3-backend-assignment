@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.efub.community.domain.member.domain.Member;
-import com.efub.community.domain.member.dto.request.LoginRequestDto;
 import com.efub.community.domain.member.dto.request.MemberUpdateRequestDto;
-import com.efub.community.domain.member.dto.request.SignUpRequestDto;
 import com.efub.community.domain.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,18 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 
 	private final MemberRepository memberRepository;
-
-	public Long signUp(SignUpRequestDto requestDto) {
-		if (isExistedStudentNo(requestDto.getStudentNo())) {
-			throw new IllegalArgumentException("이미 존재하는 학번입니다. " + requestDto.getStudentNo());
-		}
-		if (isExistedNickname(requestDto.getNickname())) {
-			throw new IllegalArgumentException("중복된 닉네임이 있습니다. " + requestDto.getNickname());
-		}
-		String encodedPassword = requestDto.getPassword();
-		Member member = memberRepository.save(requestDto.toEntity(encodedPassword));
-		return member.getMemberId();
-	}
 
 	public Long update(Long memberId, MemberUpdateRequestDto requestDto) {
 		if (isExistedNickname(requestDto.getNickname())) {
@@ -51,14 +37,6 @@ public class MemberService {
 	public void withdraw(Long memberId) {
 		Member member = findById(memberId);
 		member.withdraw();
-	}
-
-	public Long login(LoginRequestDto requestDto) {
-		Member member = findByStudentNo(requestDto.getStudentNo());
-		if (!member.getEncodedPassword().equals(requestDto.getPassword())) {
-			throw new IllegalArgumentException();
-		}
-		return member.getMemberId();
 	}
 
 	@Transactional(readOnly = true)

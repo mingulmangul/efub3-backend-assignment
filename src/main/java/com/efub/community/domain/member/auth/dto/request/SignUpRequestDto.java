@@ -1,9 +1,7 @@
-package com.efub.community.domain.member.dto.request;
+package com.efub.community.domain.member.auth.dto.request;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import com.efub.community.domain.member.domain.Member;
 
@@ -17,13 +15,9 @@ import lombok.NoArgsConstructor;
 public class SignUpRequestDto {
 
 	@NotBlank(message = "이메일은 필수입니다.")
-	@Email(message = "유효하지 않은 이메일 형식입니다.",
-		regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
 	private String email;
 
 	@NotBlank(message = "비밀번호는 필수입니다.")
-	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!.?,])[A-Za-z\\d!.?,]{2,16}$",
-		message = "16자 이내의 영문자 및 숫자와 ?,!,., , 특수문자로 입력해주세요.")
 	private String password;
 
 	@NotBlank(message = "닉네임은 필수입니다. ")
