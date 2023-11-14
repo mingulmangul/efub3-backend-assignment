@@ -1,5 +1,7 @@
 package com.efub.community.global.jwt;
 
+import static org.springframework.cloud.openfeign.security.OAuth2AccessTokenInterceptor.*;
+
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -19,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-	private static final String BEARER = "Bearer";
 
 	private final JwtAuthenticationProvider jwtAuthenticationProvider;
 

@@ -31,7 +31,7 @@ public class SecurityConfig {
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)    // JWT를 사용하므로 session은 사용 X
 			.and()
 			.authorizeRequests()
-			.antMatchers("/auth/**").permitAll()
+			.antMatchers("/auth/**", "/oauth/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.addFilterBefore(new JwtFilter(jwtAuthenticationProvider),

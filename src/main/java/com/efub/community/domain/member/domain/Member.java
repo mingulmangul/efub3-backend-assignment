@@ -33,13 +33,13 @@ public class Member extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String encodedPassword;
 
-	@Column(nullable = false, length = 16)
+	@Column(length = 16)
 	private String nickname;
 
-	@Column(nullable = false, updatable = false)
+	@Column(updatable = false)
 	private Integer studentNo;
 
-	@Column(nullable = false, updatable = false)
+	@Column(updatable = false)
 	private String university;
 
 	@Enumerated(EnumType.STRING)
@@ -47,20 +47,12 @@ public class Member extends BaseTimeEntity {
 
 	@Builder
 	public Member(String email, String encodedPassword, String nickname, Integer studentNo, String university) {
-		verifyEmail(email);
 		this.email = email;
 		this.encodedPassword = encodedPassword;
 		this.nickname = nickname;
 		this.studentNo = studentNo;
 		this.university = university;
 		this.status = REGISTERED;
-	}
-
-	private void verifyEmail(String email) {
-		String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-		if (!email.matches(regex)) {
-			throw new IllegalArgumentException("유효하지 않은 이메일 형식입니다.");
-		}
 	}
 
 	public void updateMember(String nickname) {
