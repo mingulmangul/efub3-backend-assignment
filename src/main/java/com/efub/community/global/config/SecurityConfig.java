@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.efub.community.domain.member.auth.service.CustomOAuth2UserService;
 import com.efub.community.global.jwt.JwtAuthenticationProvider;
 import com.efub.community.global.jwt.JwtFilter;
 
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 
 	private final JwtAuthenticationProvider jwtAuthenticationProvider;
+	private final CustomOAuth2UserService customOAuth2UserService;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -34,8 +36,16 @@ public class SecurityConfig {
 			.antMatchers("/auth/**", "/oauth/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
+			.logout()
+			.logoutSuccessUrl("/")
+			.and()
 			.addFilterBefore(new JwtFilter(jwtAuthenticationProvider),
 				UsernamePasswordAuthenticationFilter.class)    // 필터 추가
+			.oauth2Login()
+			.userInfoEndpoint()
+			.userService(customOAuth2UserService)
+			.and()
+			.and()
 			.build();
 	}
 
