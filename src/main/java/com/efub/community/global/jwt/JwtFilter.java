@@ -23,7 +23,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
-	private static String resolveToken(HttpServletRequest request) {
+	public static String resolveToken(HttpServletRequest request) {
 		String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (authorization == null || !authorization.startsWith(BEARER)) {
 			return null;

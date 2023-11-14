@@ -49,28 +49,28 @@ public class JwtAuthenticationProvider {
 	 * @return JwtToken : JWT
 	 */
 	public JwtToken generateJwt(Authentication authentication) {
-		// 권한 정보를 가져옴
-		String authorities = authentication.getAuthorities().stream()
-			.map(GrantedAuthority::getAuthority)
-			.collect(Collectors.joining(","));
-
 		long now = new Date(System.currentTimeMillis()).getTime();
-
 		// Access Token 생성
-		String accessToken = Jwts.builder()
-			.subject(authentication.getName())
-			.claim("auth", authorities)
-			.expiration(new Date(now + ACCESS_TOKEN_VALID_TIME))
-			.signWith(secretKey)
-			.compact();
-
+		String accessToken = createAccessToken(authentication.getAuthorities(), authentication.getName(), now);
 		// Refresh Token 생성
 		String refreshToken = Jwts.builder()
 			.expiration(new Date(now + REFRESH_TOKEN_VALID_TIME))
 			.signWith(secretKey)
 			.compact();
+		return new JwtToken(authentication.getName(), accessToken, refreshToken);
+	}
 
-		return new JwtToken(accessToken, refreshToken);
+	private String createAccessToken(Collection<? extends GrantedAuthority> authorities, String subject, long now) {
+		// 권한 정보를 가져옴
+		String auth = authorities.stream()
+			.map(GrantedAuthority::getAuthority)
+			.collect(Collectors.joining(","));
+		return Jwts.builder()
+			.subject(subject)
+			.claim("auth", auth)
+			.expiration(new Date(now + ACCESS_TOKEN_VALID_TIME))
+			.signWith(secretKey)
+			.compact();
 	}
 
 	/**
@@ -81,22 +81,37 @@ public class JwtAuthenticationProvider {
 	public Authentication authenticate(String token) {
 		// 토큰 복호화
 		Claims claims = parseClaims(token);
-		log.debug("토큰 클레임: {}", claims.toString());
-
-		if (claims.get("auth") == null) {
-			throw new SecurityException("Unauthorized JWT Token");
-		}
-
-		// 권한 정보를 꺼냄
-		Collection<SimpleGrantedAuthority> authorities =
-			Arrays.stream(claims.get("auth").toString().split(","))
-				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
+		Collection<? extends GrantedAuthority> authorities = getAuthorities(claims);
 
 		// 유저 인증 정보 생성
 		UserDetails principal = new User(claims.getSubject(), "", authorities);
 		log.debug("User principal: {}, {}", principal.getUsername(), principal.getPassword());
 		return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+	}
+
+	private Collection<? extends GrantedAuthority> getAuthorities(Claims claims) {
+		if (claims.get("auth") == null) {
+			throw new SecurityException("Unauthorized JWT Token");
+		}
+		// 권한 정보를 꺼냄
+		return Arrays.stream(claims.get("auth").toString().split(","))
+			.map(SimpleGrantedAuthority::new)
+			.collect(Collectors.toList());
+	}
+
+	/**
+	 * 리프레시 토큰을 기반으로 새로운 액세스 토큰을 발급합니다.
+	 * @param jwtToken 기존 JWT
+	 * @return 새로 발급한 액세스 토큰
+	 */
+	public String refresh(JwtToken jwtToken) {
+		validateToken(jwtToken.getRefreshToken());
+
+		Claims claims = parseClaims(jwtToken.getAccessToken());
+		Collection<? extends GrantedAuthority> authorities = getAuthorities(claims);
+
+		long now = new Date(System.currentTimeMillis()).getTime();
+		return createAccessToken(authorities, claims.getSubject(), now);
 	}
 
 	/**

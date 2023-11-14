@@ -1,5 +1,6 @@
 package com.efub.community.domain.member.auth.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.efub.community.domain.member.auth.dto.request.LoginRequestDto;
 import com.efub.community.domain.member.auth.dto.request.SignUpRequestDto;
+import com.efub.community.domain.member.auth.dto.response.JwtResponseDto;
 import com.efub.community.domain.member.auth.dto.response.SignUpResponseDto;
 import com.efub.community.domain.member.auth.service.AuthService;
 import com.efub.community.domain.member.domain.Member;
-import com.efub.community.global.jwt.JwtToken;
+import com.efub.community.global.jwt.JwtFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,8 +35,13 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	@ResponseStatus(value = HttpStatus.OK)
-	public JwtToken login(@RequestBody final LoginRequestDto requestDto) {
+	public JwtResponseDto login(@RequestBody final LoginRequestDto requestDto) {
 		return authService.login(requestDto.getEmail(), requestDto.getPassword());
+	}
+
+	@PostMapping("/refresh")
+	public JwtResponseDto refresh(HttpServletRequest request) {
+		String accessToken = JwtFilter.resolveToken(request);
+		return authService.refresh(accessToken);
 	}
 }
